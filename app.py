@@ -42,7 +42,7 @@ def detection(uploaded_file):
         print("WARNING: No bounding boxes found")
     # Remove the source, we don't need it any more
     requests.delete(f"{API_URL}{source}?{API_AUTH}")
-    return boxes
+    return [b for b in boxes if b[5]>0.4]
 
 
 def draw_predictions(pil_image, boxes):
@@ -65,9 +65,9 @@ def gen_message(boxes):
     healthy = labels.intersection(set(HEALTHY_CLASSES))
     diseases = labels.intersection(set(DISEASE_CLASSES))
     if len(diseases) > 0:        
-        st.warning(f"🦠 Your plants needs a doctor!. Found **{','.join(diseases)}**!")
+        st.warning(f"🦠 Your plants needs a doctor! Found **{','.join(diseases)}**!")
     elif len(healthy) > 0:
-        st.success(f"🪴 Your plants have good health!. Found **{','.join(healthy)}**!")
+        st.success(f"🪴 Your plants have good health! Found **{','.join(healthy)}**!")
     else:
         st.error("No plant was found")
 
