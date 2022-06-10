@@ -84,7 +84,7 @@ diagnose common **diseases** in them.  """
 image = Image.open('img/BigML.png')
 st.sidebar.image(image, width=100)
 st.sidebar.write(description)
-st.sidebar.write("Powered by [BigML](bigml.com)")
+st.sidebar.write("Powered by [BigML](https://bigml.com)")
 
 # Page title
 st.title("🌱 BigML Plant Disease Detection")
