@@ -103,15 +103,14 @@ left, right = st.columns(2)
 
 # Example images
 examples = {
-    "Example 1": "img/plant3.jpg",
-    "Example 2": "img/plant8.jpg",
-    "Example 3": "img/39-late-blight-mold.jpg",    
-    "Example 4": "img/601fbee78c62e32a76e768a92ee40193.jpg"
+    "Squash Leaves": "img/plant3.jpg",
+    "Example Raspberry": "img/plant8.jpg",
+    "Example Potato": "img/39-late-blight-mold.jpg",    
+    "Example Apple": "img/601fbee78c62e32a76e768a92ee40193.jpg"
 }
 
 with left.expander(label="Example Plants", expanded=True):
     option = st.selectbox('Choose one example image...', examples.keys(),index=0)
-    st.image(Image.open(examples[option]), width=300)
     clicked = st.button("Diagnose selected image")
     if clicked:
         example_file = open(examples[option], 'rb')
