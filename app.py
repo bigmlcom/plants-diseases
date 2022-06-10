@@ -79,7 +79,7 @@ st.set_page_config(
 description = """ Detect leafs from different kinds of plants and
 diagnose common **diseases** in them.  """
 image = Image.open('img/BigML.png')
-st.sidebar.image(image, width=220)
+st.sidebar.image(image, width=100)
 st.sidebar.write(description)
 st.sidebar.write("Powered by [BigML](bigml.com)")
 
