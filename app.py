@@ -98,31 +98,45 @@ for leaf in DISEASE_CLASSES:
 with st.expander("Model trained to find the following classes: "):
     st.write(classes) 
 
-# File uploader
-msg = "Pleanse upload your plant image."
-uploaded_file = st.file_uploader(msg, type=["png ", "jpg", "jpeg"])
+
+left, right = st.columns(2)
 
 # Example images
 examples = {
-    "Example Plant 1": "img/plant3.jpg",
-    "Example Plant 2": "img/plant8.jpg",
-    "Example Plant 3": "img/39-late-blight-mold.jpg",    
-    "Example Plant 4": "img/601fbee78c62e32a76e768a92ee40193.jpg"
+    "Example 1": "img/plant3.jpg",
+    "Example 2": "img/plant8.jpg",
+    "Example 3": "img/39-late-blight-mold.jpg",    
+    "Example 4": "img/601fbee78c62e32a76e768a92ee40193.jpg"
 }
-with st.expander("Or select one of these examples:"):
-    option = st.selectbox('Choose one', examples.keys(),index=0)
-    clicked = st.button("Select example")
+
+with left.expander(label="Example Plants", expanded=True):
+    option = st.selectbox('Choose one example image...', examples.keys(),index=0)
+    st.image(Image.open(examples[option]), width=300)
+    clicked = st.button("Diagnose selected image")
     if clicked:
-        uploaded_file = open(examples[option], 'rb')
-    for col, title in zip(st.columns(4), examples.keys()):    
-        col.image(Image.open(examples[title]), caption=title)
+        example_file = open(examples[option], 'rb')
+
+# File uploader
+msg = "Or upload your plant image..."
+with right.form("submit", clear_on_submit=True):
+    uploaded_file = st.file_uploader(msg, type=["png ", "jpg", "jpeg"])
+    submitted = st.form_submit_button("Diagnose uploaded image")
+
+
+file_to_predict = None
+if clicked and example_file:
+    file_to_predict = example_file
+elif uploaded_file and submitted:
+    file_to_predict = uploaded_file
+
 
 # Prediction Output
-if uploaded_file:
+if file_to_predict:
     st.subheader("Detection result")
     with st.spinner('Diagnose in progress. Please wait...'):
-        boxes = detection(uploaded_file)
-        uploaded_image = resize(Image.open(uploaded_file), 1000)
-        output_image = draw_predictions(uploaded_image, boxes)
+        boxes = detection(file_to_predict)
+        image = resize(Image.open(file_to_predict), 1000)
+        output_image = draw_predictions(image, boxes)
         gen_message(boxes)
         st.image(output_image, width=700)
+        uploaded_file = None
