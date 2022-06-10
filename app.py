@@ -40,6 +40,8 @@ def detection(uploaded_file):
     boxes = response.json()["prediction"].get("000000", [])
     if len(boxes) == 0:
         print("WARNING: No bounding boxes found")
+    # Remove the source, we don't need it any more
+    requests.delete(f"{API_URL}{source}?{API_AUTH}")
     return boxes
 
 
@@ -64,9 +66,10 @@ def gen_message(boxes):
     diseases = labels.intersection(set(DISEASE_CLASSES))
     if len(diseases) > 0:        
         st.warning(f"Your plants needs a doctor!. Found **{','.join(diseases)}**!")
-    else:
+    elif len(healthy) > 0:
         st.success(f"Your plants have good health!. Found **{','.join(healthy)}**!")
-
+    else:
+        st.error("No plant was found")
 
 
 st.set_page_config(
