@@ -65,9 +65,9 @@ def gen_message(boxes):
     healthy = labels.intersection(set(HEALTHY_CLASSES))
     diseases = labels.intersection(set(DISEASE_CLASSES))
     if len(diseases) > 0:        
-        st.warning(f"Your plants needs a doctor!. Found **{','.join(diseases)}**!")
+        st.warning(f"🦠 Your plants needs a doctor!. Found **{','.join(diseases)}**!")
     elif len(healthy) > 0:
-        st.success(f"Your plants have good health!. Found **{','.join(healthy)}**!")
+        st.success(f"🪴 Your plants have good health!. Found **{','.join(healthy)}**!")
     else:
         st.error("No plant was found")
 
@@ -95,7 +95,7 @@ classes += "\nDISEASES:\n"
 for leaf in DISEASE_CLASSES:
     classes += f"- {leaf}\n"
 
-with st.expander("Model trained to find the following classes: "):
+with st.expander("⚠️ Disease detection model was trained with a small dataset. It can be inaccurate sometimes. It should be able to find the following classes: "):
     st.write(classes) 
 
 
@@ -103,7 +103,7 @@ left, right = st.columns(2)
 
 # Example images
 examples = {
-    "Squash Leaves": "img/plant3.jpg",
+    "Example Squash Leaves": "img/plant3.jpg",
     "Example Raspberry": "img/plant8.jpg",
     "Example Potato": "img/39-late-blight-mold.jpg",    
     "Example Apple": "img/601fbee78c62e32a76e768a92ee40193.jpg"
