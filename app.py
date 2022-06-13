@@ -11,7 +11,7 @@ API_KEY = os.getenv("BIGML_API_KEY")
 API_AUTH = f"username={API_USERNAME};api_key={API_KEY}"
 FONT = ImageFont.truetype("img/roboto.ttf", 25)
 MODEL = "deepnet/5JidvaoVsQ28fCiJg3tBge21vwS"
-
+PREDICTION_THRESHOLD = 0.4
 HEALTHY_CLASSES =  ["Blueberry leaf", "Peach leaf", "Raspberry leaf", "Strawberry leaf",
                     "Tomato leaf", "Bell_pepper leaf"]
 DISEASE_CLASSES = ["Tomato leaf yellow virus", "Tomato Septoria leaf spot",
@@ -24,21 +24,25 @@ def resize(img, width):
     return img.resize((width, int((float(img.size[1]) * float(percent)))))
 
 
+API_URL = "https://labs.dev.bigml.io/andromeda/"
+API_USERNAME = os.getenv("BIGML_USERNAME")
+API_KEY = os.getenv("BIGML_API_KEY")
+API_AUTH = f"username={API_USERNAME};api_key={API_KEY}"
+
 def detection(uploaded_file):
-    """Apply object detection to the uploaded file"""
+    # Upload image to BigML as a source
     source_response = requests.post(
         f"{API_URL}source?{API_AUTH}",
         files={"file": ("plant_image", uploaded_file)}
     )
     source = source_response.json()["resource"]
+    # Generate prediction data
     data = {"model": MODEL, "input_data": {"000002": source}}
     response = requests.post(f"{API_URL}prediction?{API_AUTH}", json=data)
-    boxes = response.json()["prediction"].get("000000", [])
-    if len(boxes) == 0:
-        print("WARNING: No bounding boxes found")
+    regions = response.json()["prediction"].get("000000", [])
     # Remove the source, we don't need it any more
     requests.delete(f"{API_URL}{source}?{API_AUTH}")
-    return [b for b in boxes if b[5]>0.4]
+    return [r for r in regions if r[5]>PREDICTION_THRESHOLD]
 
 
 def draw_predictions(pil_image, boxes):
