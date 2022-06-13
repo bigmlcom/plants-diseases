@@ -10,16 +10,12 @@ API_USERNAME = os.getenv("BIGML_USERNAME")
 API_KEY = os.getenv("BIGML_API_KEY")
 API_AUTH = f"username={API_USERNAME};api_key={API_KEY}"
 FONT = ImageFont.truetype("img/roboto.ttf", 25)
-MODEL = "deepnet/s02lWCyZMJ6qvaI4nBEw81zw6Iv"
+MODEL = "deepnet/5JidvaoVsQ28fCiJg3tBge21vwS"
 
-HEALTHY_CLASSES = ["Blueberry leaf", "Peach leaf", "Raspberry leaf", "Strawberry leaf", "Tomato leaf",
-                   "Bell_pepper leaf", "Soyabean leaf", "Apple leaf", "Cherry leaf", "grape leaf"]
-DISEASE_CLASSES = ["Tomato leaf yellow virus", "Tomato Septoria leaf spot", "Corn leaf blight",
-                   "Potato leaf early blight", "Tomato mold leaf", "Tomato leaf bacterial spot",
-                   "Squash Powdery mildew leaf", "Bell_pepper leaf spot", "Potato leaf late blight",
-                   "Tomato leaf mosaic virus", "Tomato leaf late blight", "Tomato Early blight leaf",
-                   "Apple rust leaf", "Apple Scab Leaf", "grape leaf black rot", "Corn rust leaf",
-                   "Corn Gray leaf spot", "Tomato two spotted spider mites leaf"]
+HEALTHY_CLASSES =  ["Blueberry leaf", "Peach leaf", "Raspberry leaf", "Strawberry leaf",
+                    "Tomato leaf", "Bell_pepper leaf"]
+DISEASE_CLASSES = ["Tomato leaf yellow virus", "Tomato Septoria leaf spot",
+                   "Corn leaf blight", "Potato leaf early blight"]
 
 
 def resize(img, width):
@@ -103,10 +99,10 @@ left, right = st.columns(2)
 
 # Example images
 examples = {
-    "Example Squash Leaves": "img/plant3.jpg",
+    "Example Tomato": "img/tomato-septoria-3-500x384.jpg",
     "Example Raspberry": "img/plant8.jpg",
-    "Example Potato": "img/39-late-blight-mold.jpg",    
-    "Example Apple": "img/601fbee78c62e32a76e768a92ee40193.jpg"
+    "Example Potato": "img/Potato-Blight-on-Leaves.jpg",    
+    "Example Bell pepper": "img/Bell-pepper-leaves.jpg"
 }
 
 with left.expander(label="Example Plants", expanded=True):
